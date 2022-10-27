@@ -1,4 +1,4 @@
-import {PubSubServiceClient} from "../proto/message_grpc_pb";
+import {PubSubServiceClient} from "./message_grpc_pb";
 import {ChannelCredentials} from "@grpc/grpc-js";
 import {
     DropRequest,
@@ -8,7 +8,7 @@ import {
     PurgeRequest,
     SubscribeMessage,
     SubscribeRequest
-} from "../proto/message_pb";
+} from "./message_pb";
 
 export declare type ApophisReadFunc = (msg: Uint8Array | null) => Promise<MessageCommit>;
 

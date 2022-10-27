@@ -5,7 +5,9 @@
   "author": "devops nines <devops@nines.com.br>",
   "license": "MIT",
   "scripts": {
-    "compile": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json"
+    "compile:ts": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json",
+    "compile:copy": "cp src/lib/message_* dist/lib/es5/lib/. && cp src/lib/message_* dist/lib/es6/lib/.",
+    "compile": "npm run compile:ts && npm run compile:copy"
   },  
   "devDependencies": {
     "typescript": "^4.8.4",

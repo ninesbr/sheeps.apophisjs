@@ -1,6 +1,6 @@
 {
-    "name": "@sheeps/apophisjs",
-    "version": "0.0.1",
+    "name": "@sheepsbr/apophisjs",
+    "version": "0.0.3",
     "description": "A set of ",
     "main": "lib/es5/index.js",
     "module": "lib/es6/index.js",
@@ -23,6 +23,10 @@
     ],
     "author": "devops nines",
     "license": "MIT",
+    "dependencies": {
+      "@grpc/grpc-js": "^1.7.3",
+      "google-protobuf": "^3.21.2"
+    },
     "bugs": {
       "url": "https://github.com/ninesbr/sheeps.apophisjs/issues"
     },
