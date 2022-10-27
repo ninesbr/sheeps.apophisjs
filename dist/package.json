@@ -1,0 +1,30 @@
+{
+    "name": "@sheeps/apophisjs",
+    "version": "0.0.1",
+    "description": "A set of ",
+    "main": "lib/es5/index.js",
+    "module": "lib/es6/index.js",
+    "sideEffects": false,
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/ninesbr/sheeps.apophisjs.git"
+    },
+    "files": [
+      "lib",
+      "CHANGELOG.md",
+      "LICENSE",
+      "package.json",
+      "README.md"
+    ],
+    "keywords": [
+      "javascript",
+      "apophis",
+      "sheeps"
+    ],
+    "author": "devops nines",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/ninesbr/sheeps.apophisjs/issues"
+    },
+    "homepage": "https://github.com/ninesbr/sheeps.apophisjs#readme"
+  }
