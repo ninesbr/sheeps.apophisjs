@@ -1,0 +1,18 @@
+{
+  "name": "sheeps-apophisjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json"
+  },
+  "author": "devops@nines.com.br",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.7.3",
+    "google-protobuf": "^3.21.2"
+  }
+}
