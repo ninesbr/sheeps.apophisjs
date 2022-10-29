@@ -287,6 +287,8 @@ export class SubscribeMessage extends jspb.Message {
     setDeliverytag(value: number): SubscribeMessage;
     getChannelcode(): string;
     setChannelcode(value: string): SubscribeMessage;
+    getMime(): string;
+    setMime(value: string): SubscribeMessage;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): SubscribeMessage.AsObject;
@@ -309,6 +311,7 @@ export namespace SubscribeMessage {
         sign?: SubscribeRequest.AsObject,
         deliverytag: number,
         channelcode: string,
+        mime: string,
     }
 }
 
@@ -370,6 +373,10 @@ export class MessageHistoryResponse extends jspb.Message {
     getTracking_asU8(): Uint8Array;
     getTracking_asB64(): string;
     setTracking(value: Uint8Array | string): MessageHistoryResponse;
+    clearTagsList(): void;
+    getTagsList(): Array<string>;
+    setTagsList(value: Array<string>): MessageHistoryResponse;
+    addTags(value: string, index?: number): string;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): MessageHistoryResponse.AsObject;
@@ -389,6 +396,7 @@ export namespace MessageHistoryResponse {
         body: Uint8Array | string,
         headers: Uint8Array | string,
         tracking: Uint8Array | string,
+        tagsList: Array<string>,
     }
 }
 

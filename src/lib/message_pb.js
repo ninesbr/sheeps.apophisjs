@@ -270,7 +270,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.pb.MessageHistoryResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.pb.MessageHistoryResponse.repeatedFields_, null);
 };
 goog.inherits(proto.pb.MessageHistoryResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -2239,7 +2239,8 @@ proto.pb.SubscribeMessage.toObject = function(includeInstance, msg) {
     commit: jspb.Message.getFieldWithDefault(msg, 5, 0),
     sign: (f = msg.getSign()) && proto.pb.SubscribeRequest.toObject(includeInstance, f),
     deliverytag: jspb.Message.getFieldWithDefault(msg, 7, 0),
-    channelcode: jspb.Message.getFieldWithDefault(msg, 8, "")
+    channelcode: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    mime: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -2310,6 +2311,10 @@ proto.pb.SubscribeMessage.deserializeBinaryFromReader = function(msg, reader) {
     case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setChannelcode(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMime(value);
       break;
     default:
       reader.skipField();
@@ -2391,6 +2396,13 @@ proto.pb.SubscribeMessage.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       8,
+      f
+    );
+  }
+  f = message.getMime();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
@@ -2585,6 +2597,24 @@ proto.pb.SubscribeMessage.prototype.getChannelcode = function() {
  */
 proto.pb.SubscribeMessage.prototype.setChannelcode = function(value) {
   return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string mime = 9;
+ * @return {string}
+ */
+proto.pb.SubscribeMessage.prototype.getMime = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.pb.SubscribeMessage} returns this
+ */
+proto.pb.SubscribeMessage.prototype.setMime = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
@@ -2914,6 +2944,13 @@ proto.pb.MessageHistoryRequest.prototype.setLimit = function(value) {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.pb.MessageHistoryResponse.repeatedFields_ = [7];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2950,7 +2987,8 @@ proto.pb.MessageHistoryResponse.toObject = function(includeInstance, msg) {
     mime: jspb.Message.getFieldWithDefault(msg, 3, ""),
     body: msg.getBody_asB64(),
     headers: msg.getHeaders_asB64(),
-    tracking: msg.getTracking_asB64()
+    tracking: msg.getTracking_asB64(),
+    tagsList: (f = jspb.Message.getRepeatedField(msg, 7)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -3010,6 +3048,10 @@ proto.pb.MessageHistoryResponse.deserializeBinaryFromReader = function(msg, read
     case 6:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setTracking(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addTags(value);
       break;
     default:
       reader.skipField();
@@ -3079,6 +3121,13 @@ proto.pb.MessageHistoryResponse.serializeBinaryToWriter = function(message, writ
   if (f.length > 0) {
     writer.writeBytes(
       6,
+      f
+    );
+  }
+  f = message.getTagsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      7,
       f
     );
   }
@@ -3262,6 +3311,43 @@ proto.pb.MessageHistoryResponse.prototype.getTracking_asU8 = function() {
  */
 proto.pb.MessageHistoryResponse.prototype.setTracking = function(value) {
   return jspb.Message.setProto3BytesField(this, 6, value);
+};
+
+
+/**
+ * repeated string tags = 7;
+ * @return {!Array<string>}
+ */
+proto.pb.MessageHistoryResponse.prototype.getTagsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 7));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.pb.MessageHistoryResponse} returns this
+ */
+proto.pb.MessageHistoryResponse.prototype.setTagsList = function(value) {
+  return jspb.Message.setField(this, 7, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.pb.MessageHistoryResponse} returns this
+ */
+proto.pb.MessageHistoryResponse.prototype.addTags = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 7, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.pb.MessageHistoryResponse} returns this
+ */
+proto.pb.MessageHistoryResponse.prototype.clearTagsList = function() {
+  return this.setTagsList([]);
 };
 
 

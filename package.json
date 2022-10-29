@@ -4,6 +4,7 @@
   "repository": "git@github.com:ninesbr/sheeps.apophisjs.git",
   "author": "devops nines <devops@nines.com.br>",
   "license": "MIT",
+  "type": "commonjs",
   "scripts": {
     "compile:ts": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json",
     "compile:copy": "cp src/lib/message_* dist/lib/es5/lib/. && cp src/lib/message_* dist/lib/es6/lib/.",
