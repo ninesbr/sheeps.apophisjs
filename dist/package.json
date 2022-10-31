@@ -1,6 +1,6 @@
 {
     "name": "@sheepsbr/apophisjs",
-    "version": "0.0.4",
+    "version": "$VERSION",
     "description": "A set of ",
     "main": "lib/es5/index.js",
     "module": "lib/es6/index.js",
