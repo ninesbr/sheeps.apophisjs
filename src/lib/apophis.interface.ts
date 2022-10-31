@@ -8,7 +8,7 @@ import {
 
 export interface ApophisInterface {
 
-    create(input: CreateInput): Promise<CreateOutput>;
+    create(input?: CreateInput): Promise<CreateOutput>;
 
     drop(keepHistoryMessage?: boolean): Promise<DropOutput>;
 

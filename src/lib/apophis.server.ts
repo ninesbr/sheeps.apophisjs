@@ -150,7 +150,8 @@ export class ApophisServer implements ApophisServerInterface {
         return new Promise((resolve, reject) => {
             this._client.publish(req, (err, res) => {
                 if (err) {
-                    reject(err);
+                    reject(ApophisError.Resolve(err.message));
+                    return;
                 }
                 resolve({
                     id: res.getMsgid(),

@@ -26,8 +26,8 @@ export class Apophis implements ApophisInterface {
         this._server = server;
     }
 
-    create(input: CreateInput): Promise<CreateOutput> {
-        return this._server.create({target: this._target}, input);
+    create(input?: CreateInput): Promise<CreateOutput> {
+        return this._server.create({target: this._target}, input || {});
     }
 
     disconnect() {
