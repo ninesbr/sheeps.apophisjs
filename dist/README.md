@@ -1,4 +1,4 @@
-# Client Apophis Javascript
+# Apophis Client Javascript ☄️
 
 ```javascript
 import {NewApophis, SubscribeConfirm} from '@sheepsbr/apophisjs';
@@ -10,7 +10,12 @@ const queue = await NewApophis('my-queue', {
 });
 
 // create
-await queue.create();
+await queue.create({
+    keepMessages: true,
+    tags: ['jobs','payments'],
+    retryInterval: '5s',
+    retryDuration: '15m'
+});
 
 // publish message
 await queue.publish({
@@ -21,14 +26,15 @@ await queue.publish({
 });
 
 // consumer
+let parallelism = 2; // optional 
 await queue.subscribe(async (msg) => {
     console.log(msg);
     return SubscribeConfirm.OK;
-});
+}, parallelism);
 
 // history message
 await queue.messages({
-    tags: ['A']
+    tags: ['A'],
     status: ['DRAFT', 'READ'],
     limit: 100,
 });
@@ -46,3 +52,4 @@ await queue.info();
 await queue.disconnect();
 
 ```
+👋
