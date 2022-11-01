@@ -32,11 +32,13 @@ await queue.subscribe(async (msg) => {
     return SubscribeConfirm.OK;
 }, parallelism);
 
-// history message
+// history message stream
 await queue.messages({
-    tags: ['A'],
-    status: ['DRAFT', 'READ'],
-    limit: 100,
+   tags: ['A'],
+   status: ['DRAFT', 'READ'],
+   limit: 100,
+}, (msg) => {
+   console.log(msg);
 });
 
 // purge messages
@@ -46,7 +48,8 @@ await queue.purge();
 await queue.drop();
 
 // info queue
-await queue.info();
+const info = await queue.info();
+console.log( info );
 
 // disconnect
 await queue.disconnect();
