@@ -1,4 +1,4 @@
-import {ApophisInterface} from "./apophis.interface";
+import {Apophis} from "./apophis.interface";
 import {
     ApophisConfiguration,
     CreateInput,
@@ -11,13 +11,17 @@ import {
 import {ApophisServerInterface} from "./apophis.server.interfaces";
 import {ApophisServer} from "./apophis.server";
 
-export const NewApophis = async (target: string, config: ApophisConfiguration): Promise<ApophisInterface> => {
+export const Create = async (target: string, config: ApophisConfiguration): Promise<Apophis> => {
     const server = new ApophisServer(config.host, config.port, config.insecure);
     await server.connect(config.readTimeoutInSeconds);
-    return new Apophis(target, server);
+    const apophis = new ApophisImpl(target, server);
+    if (config.queueDefinition) {
+        await apophis.create(config.queueDefinition);
+    }
+    return apophis;
 }
 
-export class Apophis implements ApophisInterface {
+export class ApophisImpl implements Apophis {
     private readonly _server: ApophisServerInterface;
     private readonly _target: string;
 

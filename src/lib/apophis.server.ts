@@ -144,8 +144,10 @@ export class ApophisServer implements ApophisServerInterface {
         req.setContenttype(input.contentType);
         req.setBody(input.body);
         req.setTagsList(input.tags || []);
-        for (const [key, value] of Object.entries(input.headers)) {
-            req.getHeadersMap().set(key, value);
+        if (input.headers) {
+            for (const [key, value] of Object.entries(input.headers)) {
+                req.getHeadersMap().set(key, value);
+            }
         }
         return new Promise((resolve, reject) => {
             this._client.publish(req, (err, res) => {
@@ -174,36 +176,44 @@ export class ApophisServer implements ApophisServerInterface {
                 msg.getHeadersMap().forEach((v: string, k: any) => {
                     headers[k] = v;
                 })
-                const handler = (cmsg: SubscribeMessage, c: SubscribeConfirm) => {
-                    const resp = new SubscribeMessage();
-                    resp.setId(cmsg.getId());
-                    resp.setUniqid(cmsg.getUniqid());
-                    resp.setDeliverytag(cmsg.getDeliverytag());
-                    resp.setChannelcode(cmsg.getChannelcode());
-                    resp.setCommit(function (c: SubscribeConfirm): MessageCommit {
-                        switch (c) {
-                            case SubscribeConfirm.OK:
-                                return MessageCommit.OK
-                            case SubscribeConfirm.Discard:
-                                return MessageCommit.DISCARD
-                            case SubscribeConfirm.Retry:
-                                return MessageCommit.RETRY
-                            default:
-                                return MessageCommit.DISCARD
+
+                const resp = new SubscribeMessage();
+                resp.setId(msg.getId());
+                resp.setUniqid(msg.getUniqid());
+                resp.setDeliverytag(msg.getDeliverytag());
+                resp.setChannelcode(msg.getChannelcode());
+
+                const confirm: SubscribeConfirm = new class implements SubscribeConfirm {
+                    Discard() {
+                        resp.setCommit(MessageCommit.OK);
+                        stream.write(resp);
+
+                    }
+
+                    OK() {
+                        resp.setCommit(MessageCommit.DISCARD);
+                        stream.write(resp);
+                    }
+
+                    Retry(headers?: { [p: string]: string }) {
+                        if (headers) {
+                            for (const [key, value] of Object.entries(headers)) {
+                                resp.getHeadersMap().set(key, value);
+                            }
                         }
-                    }(c));
-                    stream.write(resp);
-                };
+                        resp.setCommit(MessageCommit.RETRY);
+                        stream.write(resp);
+                    }
+                }
 
                 call({
                     id: msg.getId(),
                     mimeType: msg.getMime(),
                     headers: headers,
                     body: Buffer.from(msg.getBody_asU8())
-                })
-                    .then(handler.bind(null, msg))
+                }, confirm)
                     .catch(_ => {
-                        handler(msg, SubscribeConfirm.Discard);
+                        confirm.Discard();
                     });
             });
             stream.on('end', resolve);

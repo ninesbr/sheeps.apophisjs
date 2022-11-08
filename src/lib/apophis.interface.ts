@@ -6,7 +6,7 @@ import {
     PurgeOutput, SubscribeCall
 } from "./apophis.data";
 
-export interface ApophisInterface {
+export interface Apophis {
 
     create(input?: CreateInput): Promise<CreateOutput>;
 

@@ -1,9 +1,9 @@
 # Apophis Client Javascript ☄️
 
 ```javascript
-import {NewApophis, SubscribeConfirm} from '@sheepsbr/apophisjs';
+import {Create} from '@sheepsbr/apophisjs';
 
-const queue = await NewApophis('my-queue', {
+const queue = await Create('my-queue', {
     host: "<host:strig>",
     port: <port:number>,
     insecure: <insecure:boolean>
@@ -27,9 +27,11 @@ await queue.publish({
 
 // consumer
 let parallelism = 2; // optional 
-await queue.subscribe(async (msg) => {
+await queue.subscribe(async (msg, confirm) => {
     console.log(msg);
-    return SubscribeConfirm.OK;
+    confirm.OK();
+    // confirm.Discard();
+    // confirm.Retry({"optional-header": 100 });
 }, parallelism);
 
 // history message stream

@@ -50,10 +50,10 @@ export interface SubscribeOutput {
     body: Buffer
 }
 
-export enum SubscribeConfirm {
-    OK,
-    Discard,
-    Retry
+export interface SubscribeConfirm {
+    OK();
+    Discard();
+    Retry(headers?: { [key: string]: string; });
 }
 
 export interface PublishInput {
@@ -84,7 +84,7 @@ export interface MessageHistoryOutput {
     tags?: string[]
 }
 
-export declare type SubscribeCall = (msg: SubscribeOutput | null) => Promise<SubscribeConfirm>;
+export declare type SubscribeCall = (msg: SubscribeOutput | null, confirm: SubscribeConfirm) => Promise<void>;
 
 export declare type MessageHistoryCall = (msg: MessageHistoryOutput | null) => void;
 
@@ -93,4 +93,5 @@ export interface ApophisConfiguration {
     port: number
     insecure?: boolean
     readTimeoutInSeconds?: number
+    queueDefinition?: CreateInput
 }
