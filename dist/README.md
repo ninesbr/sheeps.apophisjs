@@ -1,12 +1,19 @@
 # Apophis Client Javascript ☄️
 
 ```javascript
-import {Create} from '@sheepsbr/apophisjs';
+import {New} from '@sheepsbr/apophisjs';
 
-const queue = await Create('my-queue', {
+const queue = await New('my-queue', {
     host: "<host:strig>",
     port: <port:number>,
-    insecure: <insecure:boolean>
+    insecure: <insecure:boolean>,
+    // optional create with queue
+    queueDefinition: {
+        keepMessages: true,
+        tags: ['jobs','payments'],
+        retryInterval: '5s',
+        retryDuration: '15m'
+    }
 });
 
 // create
