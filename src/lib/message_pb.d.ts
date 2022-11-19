@@ -264,6 +264,26 @@ export namespace SubscribeRequest {
     }
 }
 
+export class UnSubscribeRequest extends jspb.Message { 
+    getUniqid(): string;
+    setUniqid(value: string): UnSubscribeRequest;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): UnSubscribeRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: UnSubscribeRequest): UnSubscribeRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: UnSubscribeRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): UnSubscribeRequest;
+    static deserializeBinaryFromReader(message: UnSubscribeRequest, reader: jspb.BinaryReader): UnSubscribeRequest;
+}
+
+export namespace UnSubscribeRequest {
+    export type AsObject = {
+        uniqid: string,
+    }
+}
+
 export class SubscribeMessage extends jspb.Message { 
     getId(): string;
     setId(value: string): SubscribeMessage;
@@ -290,6 +310,11 @@ export class SubscribeMessage extends jspb.Message {
     getMime(): string;
     setMime(value: string): SubscribeMessage;
 
+    hasUnsing(): boolean;
+    clearUnsing(): void;
+    getUnsing(): UnSubscribeRequest | undefined;
+    setUnsing(value?: UnSubscribeRequest): SubscribeMessage;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): SubscribeMessage.AsObject;
     static toObject(includeInstance: boolean, msg: SubscribeMessage): SubscribeMessage.AsObject;
@@ -312,6 +337,7 @@ export namespace SubscribeMessage {
         deliverytag: number,
         channelcode: string,
         mime: string,
+        unsing?: UnSubscribeRequest.AsObject,
     }
 }
 

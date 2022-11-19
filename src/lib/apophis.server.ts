@@ -10,7 +10,7 @@ import {
     PubRequest,
     PurgeRequest,
     SubscribeMessage,
-    SubscribeRequest
+    SubscribeRequest, UnSubscribeRequest
 } from "./message_pb";
 import {
     CreateInput, CreateOutput,
@@ -167,7 +167,11 @@ export class ApophisServer implements ApophisServerInterface {
         const timer = setInterval(() => {
             if (this._selfDisconnect) {
                 clearInterval(timer);
-                stream.destroy();
+                const unSing = new UnSubscribeRequest();
+                unSing.setUniqid(target.target);
+                const sub = new SubscribeMessage();
+                sub.setUnsing(unSing)
+                stream.write(sub);
             }
         }, 1500);
         return new Promise<void>((resolve, reject) => {
@@ -187,14 +191,11 @@ export class ApophisServer implements ApophisServerInterface {
                     Discard() {
                         resp.setCommit(MessageCommit.OK);
                         stream.write(resp);
-
                     }
-
                     OK() {
                         resp.setCommit(MessageCommit.DISCARD);
                         stream.write(resp);
                     }
-
                     Retry(headers?: { [p: string]: string }) {
                         if (headers) {
                             for (const [key, value] of Object.entries(headers)) {
@@ -204,7 +205,7 @@ export class ApophisServer implements ApophisServerInterface {
                         resp.setCommit(MessageCommit.RETRY);
                         stream.write(resp);
                     }
-                }
+                };
 
                 call({
                     id: msg.getId(),
@@ -234,11 +235,12 @@ export class ApophisServer implements ApophisServerInterface {
         })
             .catch(async (err: any) => {
                 stream.destroy();
-
+                if (err.code === 'UnSing') {
+                    return Promise.reject(err);
+                }
                 if (err.code === 'SelfDisconnected') {
                     return Promise.reject(err);
                 }
-
                 if (err.code === 'QueueNotFound') {
                     return Promise.reject(err);
                 }
