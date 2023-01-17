@@ -189,11 +189,11 @@ export class ApophisServer implements ApophisServerInterface {
 
                 const confirm: SubscribeConfirm = new class implements SubscribeConfirm {
                     Discard() {
-                        resp.setCommit(MessageCommit.OK);
+                        resp.setCommit(MessageCommit.DISCARD);
                         stream.write(resp);
                     }
                     OK() {
-                        resp.setCommit(MessageCommit.DISCARD);
+                        resp.setCommit(MessageCommit.OK);
                         stream.write(resp);
                     }
                     Retry(headers?: { [p: string]: string }) {
