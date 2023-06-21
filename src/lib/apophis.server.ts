@@ -68,7 +68,7 @@ export class ApophisServer implements ApophisServerInterface {
     create(target: Target, input: CreateInput): Promise<CreateOutput> {
         const req = new PubRequest();
         req.setDurable(input.durable || true);
-        req.setKeepmessages(input.keepMessages || true);
+        req.setKeepmessages(input.keepMessages || false);
         req.setTagsList(input.tags || []);
         req.setUniqid(target.target);
         req.setRetryinterval(input.retryInterval || "5s");
