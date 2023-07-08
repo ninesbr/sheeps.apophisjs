@@ -20,6 +20,7 @@ export interface DropInput {
 
 export interface DropOutput {
     name: string
+    error?: string[]
 }
 
 export interface InfoInput {

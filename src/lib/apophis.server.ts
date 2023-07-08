@@ -67,8 +67,8 @@ export class ApophisServer implements ApophisServerInterface {
 
     create(target: Target, input: CreateInput): Promise<CreateOutput> {
         const req = new PubRequest();
-        req.setDurable(input.durable || true);
-        req.setKeepmessages(input.keepMessages || false);
+        req.setDurable(input.durable == undefined ? true : input.durable);
+        req.setKeepmessages(input.keepMessages == undefined ? false : input.keepMessages);
         req.setTagsList(input.tags || []);
         req.setUniqid(target.target);
         req.setRetryinterval(input.retryInterval || "5s");
@@ -97,7 +97,8 @@ export class ApophisServer implements ApophisServerInterface {
                     return;
                 }
                 resolve({
-                    name: res.getName()
+                    name: res.getUniqid(),
+                    error: res.getError()?.getReasonList()
                 });
             });
         });
