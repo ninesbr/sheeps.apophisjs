@@ -177,16 +177,18 @@ export class ApophisServer implements ApophisServerInterface {
         }, 1500);
         return new Promise<void>((resolve, reject) => {
             stream.on('data', (msg: SubscribeMessage) => {
+                const resp = new SubscribeMessage();
                 const headers: { [key: string]: any; } = {};
                 msg.getHeadersMap().forEach((v: string, k: any) => {
                     headers[k] = v;
+                    resp.getHeadersMap().set(k, v);
                 })
 
-                const resp = new SubscribeMessage();
                 resp.setId(msg.getId());
                 resp.setUniqid(msg.getUniqid());
                 resp.setDeliverytag(msg.getDeliverytag());
                 resp.setChannelcode(msg.getChannelcode());
+                resp.setMime(msg.getMime());
 
                 const confirm: SubscribeConfirm = new class implements SubscribeConfirm {
                     Discard() {
@@ -203,6 +205,7 @@ export class ApophisServer implements ApophisServerInterface {
                                 resp.getHeadersMap().set(key, value);
                             }
                         }
+                        resp.setBody(msg.getBody_asU8());
                         resp.setCommit(MessageCommit.RETRY);
                         stream.write(resp);
                     }
