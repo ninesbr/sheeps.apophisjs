@@ -5,6 +5,8 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 
 export class Error extends jspb.Message { 
     getCode(): number;
@@ -28,6 +30,32 @@ export namespace Error {
     export type AsObject = {
         code: number,
         reasonList: Array<string>,
+    }
+}
+
+export class PingRequest extends jspb.Message { 
+    getId(): string;
+    setId(value: string): PingRequest;
+
+    hasNow(): boolean;
+    clearNow(): void;
+    getNow(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setNow(value?: google_protobuf_timestamp_pb.Timestamp): PingRequest;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): PingRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: PingRequest): PingRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: PingRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): PingRequest;
+    static deserializeBinaryFromReader(message: PingRequest, reader: jspb.BinaryReader): PingRequest;
+}
+
+export namespace PingRequest {
+    export type AsObject = {
+        id: string,
+        now?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }
 }
 
@@ -195,6 +223,10 @@ export class PubMessageRequest extends jspb.Message {
     getTagsList(): Array<string>;
     setTagsList(value: Array<string>): PubMessageRequest;
     addTags(value: string, index?: number): string;
+    getCustomid(): string;
+    setCustomid(value: string): PubMessageRequest;
+    getTrackingid(): string;
+    setTrackingid(value: string): PubMessageRequest;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): PubMessageRequest.AsObject;
@@ -215,6 +247,8 @@ export namespace PubMessageRequest {
         headersMap: Array<[string, string]>,
         forcecreate?: PubRequest.AsObject,
         tagsList: Array<string>,
+        customid: string,
+        trackingid: string,
     }
 }
 
@@ -423,6 +457,62 @@ export namespace MessageHistoryResponse {
         headers: Uint8Array | string,
         tracking: Uint8Array | string,
         tagsList: Array<string>,
+    }
+}
+
+export class PingResponse extends jspb.Message { 
+    getId(): string;
+    setId(value: string): PingResponse;
+    getLatency(): number;
+    setLatency(value: number): PingResponse;
+
+    hasNow(): boolean;
+    clearNow(): void;
+    getNow(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setNow(value?: google_protobuf_timestamp_pb.Timestamp): PingResponse;
+
+    getInfoMap(): jspb.Map<string, string>;
+    clearInfoMap(): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): PingResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: PingResponse): PingResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: PingResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): PingResponse;
+    static deserializeBinaryFromReader(message: PingResponse, reader: jspb.BinaryReader): PingResponse;
+}
+
+export namespace PingResponse {
+    export type AsObject = {
+        id: string,
+        latency: number,
+        now?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+
+        infoMap: Array<[string, string]>,
+    }
+}
+
+export class AboutResponse extends jspb.Message { 
+
+    getInfoMap(): jspb.Map<string, string>;
+    clearInfoMap(): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AboutResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: AboutResponse): AboutResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AboutResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AboutResponse;
+    static deserializeBinaryFromReader(message: AboutResponse, reader: jspb.BinaryReader): AboutResponse;
+}
+
+export namespace AboutResponse {
+    export type AsObject = {
+
+        infoMap: Array<[string, string]>,
     }
 }
 

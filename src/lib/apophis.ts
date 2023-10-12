@@ -67,4 +67,8 @@ export class ApophisImpl implements Apophis {
             parallelism: parallelism
         }, call);
     }
+
+    ping(): Promise<any> {
+        return this._server.ping();
+    }
 }

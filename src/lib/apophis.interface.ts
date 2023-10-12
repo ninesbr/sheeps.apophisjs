@@ -23,4 +23,7 @@ export interface Apophis {
     messages(input: MessageHistoryInput, call: MessageHistoryCall): Promise<void>;
 
     disconnect();
+
+    ping(): Promise<any>;
+
 }

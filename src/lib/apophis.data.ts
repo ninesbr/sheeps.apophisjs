@@ -62,6 +62,8 @@ export interface PublishInput {
     headers?: { [key: string]: string; }
     body: Buffer
     tags?: string[]
+    trackingId?: string
+    customId?: string
 }
 
 export interface PublishOutput {

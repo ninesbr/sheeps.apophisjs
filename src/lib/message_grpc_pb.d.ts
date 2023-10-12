@@ -6,8 +6,12 @@
 
 import * as grpc from "@grpc/grpc-js";
 import * as message_pb from "./message_pb";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 
 interface IPubSubServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    about: IPubSubServiceService_IAbout;
+    ping: IPubSubServiceService_IPing;
     create: IPubSubServiceService_ICreate;
     drop: IPubSubServiceService_IDrop;
     purge: IPubSubServiceService_IPurge;
@@ -17,6 +21,24 @@ interface IPubSubServiceService extends grpc.ServiceDefinition<grpc.UntypedServi
     messageHistory: IPubSubServiceService_IMessageHistory;
 }
 
+interface IPubSubServiceService_IAbout extends grpc.MethodDefinition<google_protobuf_empty_pb.Empty, message_pb.AboutResponse> {
+    path: "/pb.PubSubService/About";
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    requestDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+    responseSerialize: grpc.serialize<message_pb.AboutResponse>;
+    responseDeserialize: grpc.deserialize<message_pb.AboutResponse>;
+}
+interface IPubSubServiceService_IPing extends grpc.MethodDefinition<message_pb.PingRequest, message_pb.PingResponse> {
+    path: "/pb.PubSubService/Ping";
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<message_pb.PingRequest>;
+    requestDeserialize: grpc.deserialize<message_pb.PingRequest>;
+    responseSerialize: grpc.serialize<message_pb.PingResponse>;
+    responseDeserialize: grpc.deserialize<message_pb.PingResponse>;
+}
 interface IPubSubServiceService_ICreate extends grpc.MethodDefinition<message_pb.PubRequest, message_pb.PubResponse> {
     path: "/pb.PubSubService/Create";
     requestStream: false;
@@ -84,6 +106,8 @@ interface IPubSubServiceService_IMessageHistory extends grpc.MethodDefinition<me
 export const PubSubServiceService: IPubSubServiceService;
 
 export interface IPubSubServiceServer extends grpc.UntypedServiceImplementation {
+    about: grpc.handleUnaryCall<google_protobuf_empty_pb.Empty, message_pb.AboutResponse>;
+    ping: grpc.handleUnaryCall<message_pb.PingRequest, message_pb.PingResponse>;
     create: grpc.handleUnaryCall<message_pb.PubRequest, message_pb.PubResponse>;
     drop: grpc.handleUnaryCall<message_pb.DropRequest, message_pb.PubResponse>;
     purge: grpc.handleUnaryCall<message_pb.PurgeRequest, message_pb.PubResponse>;
@@ -94,6 +118,12 @@ export interface IPubSubServiceServer extends grpc.UntypedServiceImplementation 
 }
 
 export interface IPubSubServiceClient {
+    about(request: google_protobuf_empty_pb.Empty, callback: (error: grpc.ServiceError | null, response: message_pb.AboutResponse) => void): grpc.ClientUnaryCall;
+    about(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: message_pb.AboutResponse) => void): grpc.ClientUnaryCall;
+    about(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: message_pb.AboutResponse) => void): grpc.ClientUnaryCall;
+    ping(request: message_pb.PingRequest, callback: (error: grpc.ServiceError | null, response: message_pb.PingResponse) => void): grpc.ClientUnaryCall;
+    ping(request: message_pb.PingRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: message_pb.PingResponse) => void): grpc.ClientUnaryCall;
+    ping(request: message_pb.PingRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: message_pb.PingResponse) => void): grpc.ClientUnaryCall;
     create(request: message_pb.PubRequest, callback: (error: grpc.ServiceError | null, response: message_pb.PubResponse) => void): grpc.ClientUnaryCall;
     create(request: message_pb.PubRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: message_pb.PubResponse) => void): grpc.ClientUnaryCall;
     create(request: message_pb.PubRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: message_pb.PubResponse) => void): grpc.ClientUnaryCall;
@@ -118,6 +148,12 @@ export interface IPubSubServiceClient {
 
 export class PubSubServiceClient extends grpc.Client implements IPubSubServiceClient {
     constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public about(request: google_protobuf_empty_pb.Empty, callback: (error: grpc.ServiceError | null, response: message_pb.AboutResponse) => void): grpc.ClientUnaryCall;
+    public about(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: message_pb.AboutResponse) => void): grpc.ClientUnaryCall;
+    public about(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: message_pb.AboutResponse) => void): grpc.ClientUnaryCall;
+    public ping(request: message_pb.PingRequest, callback: (error: grpc.ServiceError | null, response: message_pb.PingResponse) => void): grpc.ClientUnaryCall;
+    public ping(request: message_pb.PingRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: message_pb.PingResponse) => void): grpc.ClientUnaryCall;
+    public ping(request: message_pb.PingRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: message_pb.PingResponse) => void): grpc.ClientUnaryCall;
     public create(request: message_pb.PubRequest, callback: (error: grpc.ServiceError | null, response: message_pb.PubResponse) => void): grpc.ClientUnaryCall;
     public create(request: message_pb.PubRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: message_pb.PubResponse) => void): grpc.ClientUnaryCall;
     public create(request: message_pb.PubRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: message_pb.PubResponse) => void): grpc.ClientUnaryCall;

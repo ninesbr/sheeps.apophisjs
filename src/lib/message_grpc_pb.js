@@ -3,6 +3,30 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var message_pb = require('./message_pb.js');
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+
+function serialize_google_protobuf_Empty(arg) {
+  if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
+    throw new Error('Expected argument of type google.protobuf.Empty');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_google_protobuf_Empty(buffer_arg) {
+  return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_pb_AboutResponse(arg) {
+  if (!(arg instanceof message_pb.AboutResponse)) {
+    throw new Error('Expected argument of type pb.AboutResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_pb_AboutResponse(buffer_arg) {
+  return message_pb.AboutResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
 
 function serialize_pb_DropRequest(arg) {
   if (!(arg instanceof message_pb.DropRequest)) {
@@ -46,6 +70,28 @@ function serialize_pb_MessageHistoryResponse(arg) {
 
 function deserialize_pb_MessageHistoryResponse(buffer_arg) {
   return message_pb.MessageHistoryResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_pb_PingRequest(arg) {
+  if (!(arg instanceof message_pb.PingRequest)) {
+    throw new Error('Expected argument of type pb.PingRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_pb_PingRequest(buffer_arg) {
+  return message_pb.PingRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_pb_PingResponse(arg) {
+  if (!(arg instanceof message_pb.PingResponse)) {
+    throw new Error('Expected argument of type pb.PingResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_pb_PingResponse(buffer_arg) {
+  return message_pb.PingResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_pb_PubMessageRequest(arg) {
@@ -116,6 +162,28 @@ function deserialize_pb_SubscribeMessage(buffer_arg) {
 
 
 var PubSubServiceService = exports.PubSubServiceService = {
+  about: {
+    path: '/pb.PubSubService/About',
+    requestStream: false,
+    responseStream: false,
+    requestType: google_protobuf_empty_pb.Empty,
+    responseType: message_pb.AboutResponse,
+    requestSerialize: serialize_google_protobuf_Empty,
+    requestDeserialize: deserialize_google_protobuf_Empty,
+    responseSerialize: serialize_pb_AboutResponse,
+    responseDeserialize: deserialize_pb_AboutResponse,
+  },
+  ping: {
+    path: '/pb.PubSubService/Ping',
+    requestStream: false,
+    responseStream: false,
+    requestType: message_pb.PingRequest,
+    responseType: message_pb.PingResponse,
+    requestSerialize: serialize_pb_PingRequest,
+    requestDeserialize: deserialize_pb_PingRequest,
+    responseSerialize: serialize_pb_PingResponse,
+    responseDeserialize: deserialize_pb_PingResponse,
+  },
   create: {
     path: '/pb.PubSubService/Create',
     requestStream: false,

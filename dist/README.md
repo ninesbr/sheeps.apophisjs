@@ -29,7 +29,9 @@ await queue.publish({
     contentType: "application/json",
     headers: {"abc": "abc"},
     body: Buffer.from(JSON.stringify({})),
-    tags: ['A', 'B']
+    tags: ['A', 'B'],
+    customId: 'my-custom-id', // optional
+    trackingId: 'my-tracking-id', // optional
 });
 
 // consumer
@@ -59,9 +61,12 @@ await queue.drop();
 // info queue
 const info = await queue.info();
 console.log( info );
-
+            
+// ping
+const ping = await apophis.ping();
+console.log( ping );
+            
 // disconnect
 await queue.disconnect();
-
 ```
 👋

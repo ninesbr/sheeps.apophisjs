@@ -17,4 +17,18 @@ export class ApophisError extends Error {
             return new ApophisError();
         }
     }
+    static Of(err?: any): ApophisError {
+        if(err.details && err.details?.startsWith('{')) {
+            try {
+                let parsed = JSON.parse(err.details);
+                return new ApophisError(parsed.code, parsed.message);
+            } catch (_) {
+                return new ApophisError();
+            }
+        }
+        if (err.code && err.message) {
+            return new ApophisError(err.code, err.message);
+        }
+        return new ApophisError();
+    }
 }

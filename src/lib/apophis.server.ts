@@ -10,7 +10,8 @@ import {
     PubRequest,
     PurgeRequest,
     SubscribeMessage,
-    SubscribeRequest, UnSubscribeRequest
+    SubscribeRequest, UnSubscribeRequest,
+    PingRequest
 } from "./message_pb";
 import {
     CreateInput, CreateOutput,
@@ -23,6 +24,7 @@ import {
 } from "./apophis.data";
 import {ApophisServerInterface} from "./apophis.server.interfaces";
 import {ApophisError} from "./apophis.error";
+import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 
 const jsonUnmarshall = (buffer: Uint8Array): { [key: string]: any; } => {
     const jsonString = Buffer.from(buffer).toString('utf8')
@@ -139,6 +141,27 @@ export class ApophisServer implements ApophisServerInterface {
         });
     }
 
+    ping(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const timestamp = Timestamp.fromDate(new Date());
+            const req = new PingRequest()
+            req.setNow(timestamp);
+            this._client.ping(req, (err, res) => {
+                if (err) {
+                    reject(ApophisError.Resolve(err.message));
+                    return;
+                }
+
+                const now = res.getNow();
+
+                resolve({
+                    latency: res.getLatency(),
+                    now:  now?.toDate(),
+                });
+            });
+        });
+    }
+
     publish(target: Target, input: PublishInput): Promise<PublishOutput> {
         const req = new PubMessageRequest();
         req.setUniqid(target.target);
@@ -150,10 +173,16 @@ export class ApophisServer implements ApophisServerInterface {
                 req.getHeadersMap().set(key, value);
             }
         }
+        if (input.trackingId) {
+            req.setTrackingid(input.trackingId);
+        }
+        if (input.customId) {
+            req.setCustomid(input.customId);
+        }
         return new Promise((resolve, reject) => {
             this._client.publish(req, (err, res) => {
                 if (err) {
-                    reject(ApophisError.Resolve(err.message));
+                    reject(ApophisError.Of(err));
                     return;
                 }
                 resolve({
@@ -164,21 +193,27 @@ export class ApophisServer implements ApophisServerInterface {
     }
 
     subscribe(target: Target, input: SubscribeInput, call: SubscribeCall): Promise<void> {
-        const stream = this._client.subscribe();
-        const timer = setInterval(() => {
-            if (this._selfDisconnect) {
-                clearInterval(timer);
-                const unSing = new UnSubscribeRequest();
-                unSing.setUniqid(target.target);
-                const sub = new SubscribeMessage();
-                sub.setUnsing(unSing)
-                stream.write(sub);
-            }
-        }, 1500);
+         const stream = this._client.subscribe();
+         const timer = setInterval(() => {
+             if (this._selfDisconnect) {
+                 clearInterval(timer);
+                 const unSing = new UnSubscribeRequest();
+                 unSing.setUniqid(target.target);
+                 const sub = new SubscribeMessage();
+                 sub.setUnsing(unSing)
+                 try {
+                     stream.write(sub);
+                 } catch (e) {
+                     console.log("💣 subscribe error:", e);
+                 }
+             }
+         }, 1500);
+
         return new Promise<void>((resolve, reject) => {
             stream.on('data', (msg: SubscribeMessage) => {
                 const resp = new SubscribeMessage();
                 const headers: { [key: string]: any; } = {};
+
                 msg.getHeadersMap().forEach((v: string, k: any) => {
                     headers[k] = v;
                     resp.getHeadersMap().set(k, v);
@@ -205,6 +240,7 @@ export class ApophisServer implements ApophisServerInterface {
                                 resp.getHeadersMap().set(key, value);
                             }
                         }
+
                         resp.setBody(msg.getBody_asU8());
                         resp.setCommit(MessageCommit.RETRY);
                         stream.write(resp);
@@ -216,14 +252,12 @@ export class ApophisServer implements ApophisServerInterface {
                     mimeType: msg.getMime(),
                     headers: headers,
                     body: Buffer.from(msg.getBody_asU8())
-                }, confirm)
-                    .catch(_ => {
+                }, confirm)?.catch(_ => {
                         confirm.Discard();
                     });
             });
             stream.on('end', resolve);
-            stream.on('error', (err: any) => reject(ApophisError.Resolve(err.message)));
-            stream.on('resume', () => console.log('resume subscribe'));
+            stream.on('error', (err: any) => reject(ApophisError.Of(err)));
             stream.on('close', () => {
                 if (this._selfDisconnect) {
                     reject(new ApophisError('SelfDisconnected', 'self disconnected'));
@@ -249,6 +283,7 @@ export class ApophisServer implements ApophisServerInterface {
                     return Promise.reject(err);
                 }
                 await new Promise(resolve => setTimeout(resolve, 5000))
+                console.log("💣 subscribe retry reconnecting...")
                 return this.subscribe(target, input, call)
             });
     }
@@ -284,7 +319,9 @@ export class ApophisServer implements ApophisServerInterface {
     disconnect() {
         this._selfDisconnect = true;
         if (this._client) {
-            this._client.close();
+            try {
+                this._client.close();
+            }catch (ignore) {}
         }
     }
 }
