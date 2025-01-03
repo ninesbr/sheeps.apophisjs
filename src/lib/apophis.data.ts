@@ -92,9 +92,13 @@ export declare type SubscribeCall = (msg: SubscribeOutput | null, confirm: Subsc
 export declare type MessageHistoryCall = (msg: MessageHistoryOutput | null) => void;
 
 export interface ApophisConfiguration {
+    name: string
     host: string
     port: number
     insecure?: boolean
     readTimeoutInSeconds?: number
-    queueDefinition?: CreateInput
+    queueDefinition?: CreateInput,
+    poolName?: string
+    poolMin?: number
+    poolMax?: number
 }

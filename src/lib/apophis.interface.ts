@@ -24,6 +24,8 @@ export interface Apophis {
 
     disconnect();
 
+    isConnected(): boolean;
+
     ping(): Promise<any>;
 
 }

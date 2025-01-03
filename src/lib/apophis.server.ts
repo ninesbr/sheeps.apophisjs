@@ -324,4 +324,8 @@ export class ApophisServer implements ApophisServerInterface {
             }catch (ignore) {}
         }
     }
+
+    isConnect(): boolean {
+        return this._client && this._client.getChannel().getConnectivityState(false) === 2;
+    }
 }

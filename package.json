@@ -9,10 +9,12 @@
     "compile:ts": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json",
     "compile:copy": "cp src/lib/message_* dist/lib/es5/lib/. && cp src/lib/message_* dist/lib/es6/lib/.",
     "compile": "npm run compile:ts && npm run compile:copy"
-  },  
+  },
   "devDependencies": {
-    "typescript": "^4.8.4",
     "@grpc/grpc-js": "^1.7.3",
-    "google-protobuf": "^3.21.2"
+    "class-validator": "^0.14.1",
+    "google-protobuf": "^3.21.2",
+    "sequelize-pool": "^8.0.0",
+    "typescript": "^4.8.4"
   }
 }

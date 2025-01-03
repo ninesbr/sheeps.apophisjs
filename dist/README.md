@@ -69,4 +69,27 @@ console.log( ping );
 // disconnect
 await queue.disconnect();
 ```
-👋
+
+## Using with pool
+
+```javascript
+import { ApophisPool } from '@sheepsbr/apophisjs';
+
+const apophis = ApophisPool.Create({
+    // note: name is required for pool
+    name: `my-queue`, 
+    host: "<host:strig>",
+    port: <port:number>,
+    insecure: <insecure:boolean>,
+    readTimeoutInSeconds: 5,
+    // optional create with queue
+    queueDefinition: {
+        keepMessages: true,
+        tags: ['jobs','payments'],
+        retryInterval: '5s',
+        retryDuration: '15m'
+    }
+});
+```
+
+👋 bye sheepers

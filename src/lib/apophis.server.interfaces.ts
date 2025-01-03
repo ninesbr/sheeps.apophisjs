@@ -33,4 +33,6 @@ export interface ApophisServerInterface {
     ping(): Promise<any>;
 
     disconnect();
+
+    isConnect(): boolean;
 }

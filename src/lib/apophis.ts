@@ -11,10 +11,10 @@ import {
 import {ApophisServerInterface} from "./apophis.server.interfaces";
 import {ApophisServer} from "./apophis.server";
 
-export const New = async (target: string, config: ApophisConfiguration): Promise<Apophis> => {
+export const New = async (config: ApophisConfiguration): Promise<Apophis> => {
     const server = new ApophisServer(config.host, config.port, config.insecure);
     await server.connect(config.readTimeoutInSeconds);
-    const apophis = new ApophisImpl(target, server);
+    const apophis = new ApophisImpl(config.name, server);
     if (config.queueDefinition) {
         await apophis.create(config.queueDefinition);
     }
@@ -36,6 +36,10 @@ export class ApophisImpl implements Apophis {
 
     disconnect() {
         this._server.disconnect();
+    }
+
+    isConnected(): boolean {
+        return this._server.isConnect();
     }
 
     drop(keepHistoryMessage?: boolean): Promise<DropOutput> {
