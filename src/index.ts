@@ -1,4 +1,3 @@
-export * from './lib/apophis.data';
-export * from './lib/apophis.interface';
-export * from './lib/apophis'
-export * from './lib/apophis.pool.impl';
+export * from './lib/ApophisData';
+export * from './lib/ApophisInterface';
+export * from './lib/ApophisPool';

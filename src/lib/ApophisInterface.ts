@@ -2,11 +2,17 @@ import {
     CreateInput,
     CreateOutput,
     DropOutput,
-    InfoOutput, MessageHistoryCall, MessageHistoryInput, PublishInput, PublishOutput,
-    PurgeOutput, SubscribeCall
-} from "./apophis.data";
+    InfoOutput, 
+    MessageHistoryCall, 
+    MessageHistoryInput, 
+    PingOutput, 
+    PublishInput, 
+    PublishOutput,
+    PurgeOutput, 
+    SubscribeCall
+} from "./ApophisData";
 
-export interface Apophis {
+export interface ApophisInterface {
 
     create(input?: CreateInput): Promise<CreateOutput>;
 
@@ -22,10 +28,9 @@ export interface Apophis {
 
     messages(input: MessageHistoryInput, call: MessageHistoryCall): Promise<void>;
 
-    disconnect();
+    disconnect(): void;
 
     isConnected(): boolean;
 
-    ping(): Promise<any>;
-
+    ping(): Promise<PingOutput>;
 }

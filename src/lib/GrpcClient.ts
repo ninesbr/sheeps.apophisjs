@@ -3,22 +3,26 @@ import {
     CreateOutput,
     DropInput,
     DropOutput,
-    InfoInput,
     InfoOutput,
     MessageHistoryCall,
     MessageHistoryInput,
+    PingOutput,
     PublishInput,
     PublishOutput,
-    PurgeInput,
-    PurgeOutput, SubscribeCall, SubscribeInput, Target
-} from "./apophis.data";
+    PurgeOutput,
+    SubscribeCall,
+    SubscribeInput,
+    Target
+} from "./ApophisData";
+import { Comparable } from "./Comparable";
 
-export interface ApophisServerInterface {
-    connect(waitSeconds?: number): Promise<ApophisServerInterface>;
+export interface GrpcClient extends Comparable<GrpcClient> {
+
+    connect(waitSeconds?: number): Promise<GrpcClient>;
 
     create(target: Target, input: CreateInput): Promise<CreateOutput>;
 
-    drop(target: Target,input: DropInput): Promise<DropOutput>;
+    drop(target: Target, input: DropInput): Promise<DropOutput>;
 
     info(target: Target): Promise<InfoOutput>;
 
@@ -30,9 +34,11 @@ export interface ApophisServerInterface {
 
     messages(target: Target, input: MessageHistoryInput, call: MessageHistoryCall): Promise<void>;
 
-    ping(): Promise<any>;
+    ping(): Promise<PingOutput>;
 
-    disconnect();
+    disconnect(): void;
 
     isConnect(): boolean;
+
+    getId(): string;
 }

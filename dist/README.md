@@ -1,23 +1,32 @@
 # Apophis Client Javascript ☄️
 
 ```javascript
-import {New} from '@sheepsbr/apophisjs';
+import {ApophisPool, ApophisConfiguration} from '@sheepsbr/apophisjs';
 
-const queue = await New('my-queue', {
-    host: "<host:strig>",
-    port: <port:number>,
-    insecure: <insecure:boolean>,
-    // optional create with queue
-    queueDefinition: {
+
+const config: ApophisConfiguration = {
+    host: string, //required
+    port: number, //required
+    name: string, //required
+    insecure: boolean, //optional
+    queueDefinition: { //optional
         keepMessages: true,
         tags: ['jobs','payments'],
         retryInterval: '5s',
         retryDuration: '15m'
     }
-});
+    // optional values
+    readTimeoutInSeconds: number,                  // default 5
+    poolMin?: number                               // default 1
+    poolMax?: number                               // default 2
+    logLevel?: 'debug' | 'info' | 'error' | 'off', // error
+}
+
+const apophis = ApophisPool.Create(config);
+
 
 // create
-await queue.create({
+await apophis.create({
     keepMessages: true,
     tags: ['jobs','payments'],
     retryInterval: '5s',
@@ -25,18 +34,18 @@ await queue.create({
 });
 
 // publish message
-await queue.publish({
+await apophis.publish({
     contentType: "application/json",
     headers: {"abc": "abc"},
     body: Buffer.from(JSON.stringify({})),
     tags: ['A', 'B'],
-    customId: 'my-custom-id', // optional
-    trackingId: 'my-tracking-id', // optional
+    customId: 'my-custom-id',
+    trackingId: 'my-tracking-id',
 });
 
 // consumer
-let parallelism = 2; // optional 
-await queue.subscribe(async (msg, confirm) => {
+let parallelism = 2; 
+await apophis.subscribe(async (msg, confirm) => {
     console.log(msg);
     confirm.OK();
     // confirm.Discard();
@@ -44,7 +53,7 @@ await queue.subscribe(async (msg, confirm) => {
 }, parallelism);
 
 // history message stream
-await queue.messages({
+await apophis.messages({
    tags: ['A'],
    status: ['DRAFT', 'READ'],
    limit: 100,
@@ -53,13 +62,13 @@ await queue.messages({
 });
 
 // purge messages
-await queue.purge();
+await apophis.purge();
 
 // drop queue
-await queue.drop();
+await apophis.drop();
 
 // info queue
-const info = await queue.info();
+const info = await apophis.info();
 console.log( info );
             
 // ping
@@ -67,29 +76,7 @@ const ping = await apophis.ping();
 console.log( ping );
             
 // disconnect
-await queue.disconnect();
-```
-
-## Using with pool
-
-```javascript
-import { ApophisPool } from '@sheepsbr/apophisjs';
-
-const apophis = ApophisPool.Create({
-    // note: name is required for pool
-    name: `my-queue`, 
-    host: "<host:strig>",
-    port: <port:number>,
-    insecure: <insecure:boolean>,
-    readTimeoutInSeconds: 5,
-    // optional create with queue
-    queueDefinition: {
-        keepMessages: true,
-        tags: ['jobs','payments'],
-        retryInterval: '5s',
-        retryDuration: '15m'
-    }
-});
+await apophis.disconnect();
 ```
 
 👋 bye sheepers
