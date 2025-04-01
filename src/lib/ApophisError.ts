@@ -17,6 +17,7 @@ export class ApophisError extends Error {
             return new ApophisError();
         }
     }
+    
     static Of(err?: any): ApophisError {
         if(err.details && err.details?.startsWith('{')) {
             try {

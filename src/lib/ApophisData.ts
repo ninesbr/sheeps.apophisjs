@@ -52,9 +52,9 @@ export interface SubscribeOutput {
 }
 
 export interface SubscribeConfirm {
-    OK();
-    Discard();
-    Retry(headers?: { [key: string]: string; });
+    OK(): void;
+    Discard(): void;
+    Retry(headers?: { [key: string]: string; }): void;
 }
 
 export interface PublishInput {
@@ -98,7 +98,12 @@ export interface ApophisConfiguration {
     insecure?: boolean
     readTimeoutInSeconds?: number
     queueDefinition?: CreateInput,
-    poolName?: string
     poolMin?: number
     poolMax?: number
+    logLevel?: 'debug' | 'info' | 'error' | 'off',
+}
+
+export interface PingOutput {
+    latency: number
+    now?: Date
 }
